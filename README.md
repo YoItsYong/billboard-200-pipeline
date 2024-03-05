@@ -4,10 +4,14 @@ Link to data
 https://www.dropbox.com/s/ahog97hcatpiddk/billboard-200.db?dl=1
 
 Todo List
-- Create GCP Project & connect gsutil
-- Setup Terraform
-git clone https://github.com/mage-ai/mage-ai-terraform-templates.git
-    - Review what to replace in variables.tf + main.tf
+- Create GCP Project x
+- Install Terraform x
+
+https://docs.mage.ai/production/deploying-to-cloud/using-terraform
+- setup terraform using link above (git clone + docker pull)
+
+https://docs.mage.ai/production/deploying-to-cloud/gcp/setup
+- setup gcp + docker with mage
 
 - Setup Mage & Docker
     - Download data from link
@@ -15,6 +19,7 @@ git clone https://github.com/mage-ai/mage-ai-terraform-templates.git
     - Partition and convert to parquet
     - Move to DL (GCS)
     - DBT to transform (set schemas, join tables)
+        - Install DBT via Docker: https://docs.getdbt.com/docs/core/docker-install
     - Move to DWH (BQ)
 
 - Scheduling
