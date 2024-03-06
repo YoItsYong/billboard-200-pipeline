@@ -1,1 +1,4 @@
-terraform/gcp/google-cloud-sdk
+terraform/gcp/google-cloud-sdk/
+albums.csv
+acoustic_features.csv
+*.db
