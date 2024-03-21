@@ -3,3 +3,5 @@ albums.csv
 acoustic_features.csv
 *.db
 *.json
+
+mage/dev.env

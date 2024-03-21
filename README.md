@@ -28,3 +28,7 @@ https://docs.mage.ai/production/deploying-to-cloud/gcp/setup
     - Assign partitions id
     - Start count when project deployed
     - Each day, advance count
+
+git clone https://github.com/mage-ai/compose-quickstart.git mage \
+&& cd mage \
+&& cp dev.env .env
