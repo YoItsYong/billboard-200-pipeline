@@ -2,3 +2,4 @@ terraform/gcp/google-cloud-sdk/
 albums.csv
 acoustic_features.csv
 *.db
+*.json
