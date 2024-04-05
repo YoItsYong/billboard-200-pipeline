@@ -1,6 +1,11 @@
+"""
+This file takes the resulting albums.csv file from the sqlite_to_csv.py script and compresses it further into a .csv.gz file
+for the sake of conserving space.
+"""
 import gzip
 import shutil
 
+# albums.csv should be one of the resulting files of running sqllite_to_csv.py
 albums_input = 'albums.csv'
 albums_output = 'billboard200_albums.csv.gz'
 

@@ -1,5 +1,7 @@
 """
-Converts SQLite .db file to CSV
+This file takes the billboard-200.db data and converts the resulting tables into separate csv files.
+
+After running this script, run the csv_to_gz.py for further compression.
 """
 import requests
 import sqlite3
