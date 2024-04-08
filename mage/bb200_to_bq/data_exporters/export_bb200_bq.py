@@ -4,7 +4,6 @@ if 'data_exporter' not in globals():
 
 @data_exporter
 def export_data(data, *args, **kwargs):
-    # Specify your data exporting logic here
     os.system("""
     ./gsutil/google-cloud-sdk/bin/gcloud dataproc jobs submit pyspark \
         --project=INSERT_PROJECT_NAME \
@@ -16,5 +15,3 @@ def export_data(data, *args, **kwargs):
             --input_albums=gs://bb200/bb200_albums.parquet \
             --output=bb200_data.bb200_albums
     """)
-
-
