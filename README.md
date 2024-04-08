@@ -1,5 +1,10 @@
 # Billboard 200 Pipeline
 < Include banner image of some kind >
+
+## Table of Contents
+- Add
+- Section
+- Links
 ## Introduction
 The Billboard 200 is a weekly music chart that measures the top selling (or streaming) albums in the United States. Placing at the top of the chart has historically been a marker of a release's success and can often be an important factor in how an artist defines their legacy.
 
@@ -24,10 +29,10 @@ To create this pipeline, I used a variety of technologies to extract, transform,
 The data set orginates from [Components.one](https://www.dropbox.com/s/ahog97hcatpiddk/billboard-200.db?dl=1), a research platform that makes its data sets publicly available for use. The data from this site first comes in the form of a `.db` file, which is most commonly used with SQLite. Because this is not a file type I am used to working with, I opted to take this `.db` file and convert it to a `.csv.gz` for the sake of working more comfortably.
 
 <!-- Make sure update any file or folder names referenced here -->
-The files in the `**insert folder**` can be used to convert the original SQLite file to a `.csv.gz`. This can be run locally if you would like to convert the data into `.csv.gz` or you can simply use the converted [found here](https://github.com/YoItsYong/billboard-200-pipeline/tree/main/data).
+The files in `python/prepare_data` can be used to convert the original SQLite file to a `.csv.gz`. This can be run locally if you would like to convert the data into `.csv.gz` or you can simply use the converted [found here](https://github.com/YoItsYong/billboard-200-pipeline/tree/main/data).
 
 ### Ingesting the Data
-After getting the `billboard200_albums.csv.gz` file, we will then ingest the data using the `insert file name` in Mage where we can orechestrate the ingestion and loading to our Data Lake in Google Cloud Storage (GCS).
+After getting the `billboard200_albums.csv.gz` file, we then load the data using Mage where we can orechestrate the ingestion and exporting to our Data Lake in Google Cloud Storage (GCS).
 
 During this step, we also convert the file from `.csv.gz` to `.parquet` to take up less space on GCS.
 
@@ -126,7 +131,7 @@ Confirm the folllowing resources were created with their respective names.
 
 If any of these were not created created incorrectly, fix it manually.
 ### Configure Spark_Dataproc.py
-After everything on Google Cloud is set up correctly, we'll configure the `spark_dataproc.py` file in `folder/`.
+After everything on Google Cloud is set up correctly, we'll configure the `spark_dataproc.py` file in `python/spark_dataproc`.
 
 Replace the variables below with what matches your project.
 
@@ -198,21 +203,39 @@ _Note: You may have to edit the script above depending on your folder structure.
 ### Create Pipeline to Google Cloud Storage
 Our first pipeline will take the `billbaord200_albums_data` found [here](https://github.com/YoItsYong/billboard-200-pipeline/raw/main/data/billboard200_albums.csv.gz) and upload it to our Data Lake in Google Cloud Storage.
 
-For this, you can copy and paste the `data_loader.py` and `data_exporter` files in `insert folder`. Your pipeline should look like this:
+For this, you can copy and paste the `load_bb200_csv.py` and `export_bb200_gcs.py` files in `bb200_to_gcs`.
+
+Your pipeline should look like this:
 
 < insert image >
-
-Before running the pipeline, make sure to replace `insert variable` with your `variable`.
 
 This moves the data to Google Cloud Storage and converts the `.csv.gz` to `parquet` using `PyArrow`.
 ### Create Pipeline to BigQuery
 Now that our `.parquet` files are available in GCS, we will now process and transform this data, move it over to our Data Warehouse in Google BigQuery.
 
-For this, you can copy and paste the `data_loader.py` and `data_exporter` files in `insert folder`. Your pipeline should look like this:
+In the `bb200_to_bq` folder, copy and paste the code to assemble your own pipeline. For the data loader, copy the code in `load_bb200_gcs.py` and for the data exporters, copy the code in `export_bb200_bq.py`.
+
+Your pipeline should look like this:
 
 < insert image >
 
-Before running the pipeline, make sure to replace `insert variable` with your `variable`.
+Before running the pipeline, make sure to replace `project` with the name of your Google Cloud Project name.
+
+```
+@data_exporter
+def export_data(data, *args, **kwargs):
+    os.system("""
+    ./gsutil/google-cloud-sdk/bin/gcloud dataproc jobs submit pyspark \
+        --project=INSERT_PROJECT_NAME \
+        --cluster=music-chart-cluster \
+        --region=us-central1 \
+        --jars=gs://spark-lib/bigquery/spark-bigquery-with-dependencies_2.12-0.23.2.jar \
+    gs://bb200/code/spark_dataproc.py \
+        -- \
+            --input_albums=gs://bb200/bb200_albums.parquet \
+            --output=bb200_data.bb200_albums
+    """)
+```
 
 Running this pipeline loads data from GCS and performs the transformations using `Apache Spark`. The transformed data is then moved to our BigQuery where we can connect to it with Google Data Studio for visualizations.
 
@@ -223,6 +246,7 @@ After this is added, you will be able to create tables, charts, and more to visu
 
 ### Removing Resources
 To avoid accruing costs on Google Cloud Platform, you can run the following command in your system terminal (not your Mage one) to breakdown the Terraform resources.
+
 `terraform destroy`
 
 ## References
