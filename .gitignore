@@ -4,6 +4,3 @@ acoustic_features.csv
 billboard200_features.csv.gz
 *.db
 *.json
-
-dev.env
-.env
