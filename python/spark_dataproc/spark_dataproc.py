@@ -11,7 +11,7 @@ from pyspark.context import SparkContext
 from pyspark.sql.types import StringType, DateType, FloatType, IntegerType
 
 # Replace with path to your Serivce Account Key
-gcs_key = '/workspaces/billboard-200-pipeline/bb200-gcp-creds.json'
+gcs_key = 'path/to/service_account_key.json'
 
 parser = argparse.ArgumentParser()
 
@@ -28,7 +28,7 @@ spark = SparkSession.builder \
     .getOrCreate()
 
 #Replace temp_gcs_bucket with the name of your temporary bucket in GCS
-temp_gcs_bucket = 'dataproc-temp-us-central1-968744273040-pk1v5m8n'
+temp_gcs_bucket = 'name_of_temp_gcs_bucket'
 spark.conf.set('temporaryGcsBucket', temp_gcs_bucket)
 
 df = spark.read.parquet('gs://bb200/bb200_albums.parquet')

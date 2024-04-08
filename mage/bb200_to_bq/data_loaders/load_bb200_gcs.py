@@ -1,4 +1,5 @@
 import os
+
 from mage_ai.settings.repo import get_repo_path
 from mage_ai.io.config import ConfigFileLoader
 from mage_ai.io.google_cloud_storage import GoogleCloudStorage
@@ -23,11 +24,3 @@ def load_from_google_cloud_storage(*args, **kwargs):
         bucket_name,
         object_key,
     )
-
-
-@test
-def test_output(output, *args) -> None:
-    """
-    Template code for testing the output of the block.
-    """
-    assert output is not None, 'The output is undefined'

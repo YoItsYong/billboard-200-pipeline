@@ -2,9 +2,14 @@
 < Include banner image of some kind >
 
 ## Table of Contents
-- Add
-- Section
-- Links
+- [Introduction](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#introduction)
+- [Objective](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#objective)
+- [Technologies](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#technologies)
+- [Data Pipeline](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#data-pipeline)
+- [Dashboard](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#data-pipeline)
+- [Future Improvements](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#data-pipeline)
+- [Reproducing the Project](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#data-pipeline)
+- [References](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#data-pipeline)
 ## Introduction
 The Billboard 200 is a weekly music chart that measures the top selling (or streaming) albums in the United States. Placing at the top of the chart has historically been a marker of a release's success and can often be an important factor in how an artist defines their legacy.
 
@@ -93,7 +98,7 @@ The instructions below will help you set up the project environment and connect 
 - **Create Google Account:** Visit [cloud.google.com](https://cloud.google.com/?hl=en) and create a new Google account if you don't have one already
     - Create a new project
     - Create Service Account w/ Owner permissions
-    -  Enable Google [Compute Engine Api](https://console.cloud.google.com/apis/library/compute.googleapis.com)
+    -  Enable Google [Compute Engine API](https://console.cloud.google.com/apis/library/compute.googleapis.com)
     - Download Service Account Key (JSON)
 - **Install Terraform:** Follow [instructions here](https://developer.hashicorp.com/terraform/tutorials/gcp-get-started/install-cli) to install Terraform
 ### Using Terraform for Google Cloud Setup
@@ -169,7 +174,7 @@ cp dev.env .env && rm dev.env
 docker compose up
 ```
 
-Your Mage instance should now be live on `localhost:6789`.
+Your Mage instance should now be live on `localhost:6789`. Using the Mage UI, drag and drop the Service Account Key JSON file into the Mage project folder.
 ### Install Google Cloud CLI
 Within the Mage UI, click on the `Terminal` button on the side menu as shown below.
 
@@ -201,7 +206,7 @@ Next, we'll run the following script to authorize Mage to make changes to your G
 _Note: You may have to edit the script above depending on your folder structure._
 
 ### Create Pipeline to Google Cloud Storage
-Our first pipeline will take the `billbaord200_albums_data` found [here](https://github.com/YoItsYong/billboard-200-pipeline/raw/main/data/billboard200_albums.csv.gz) and upload it to our Data Lake in Google Cloud Storage.
+Our first pipeline will take the `billboard200_albums_data` found [here](https://github.com/YoItsYong/billboard-200-pipeline/raw/main/data/billboard200_albums.csv.gz) and upload it to our Data Lake in Google Cloud Storage.
 
 For this, you can copy and paste the `load_bb200_csv.py` and `export_bb200_gcs.py` files in `bb200_to_gcs`.
 
@@ -213,7 +218,9 @@ This moves the data to Google Cloud Storage and converts the `.csv.gz` to `parqu
 ### Create Pipeline to BigQuery
 Now that our `.parquet` files are available in GCS, we will now process and transform this data, move it over to our Data Warehouse in Google BigQuery.
 
-In the `bb200_to_bq` folder, copy and paste the code to assemble your own pipeline. For the data loader, copy the code in `load_bb200_gcs.py` and for the data exporters, copy the code in `export_bb200_bq.py`.
+In the `bb200_to_bq` folder, copy and paste the code to assemble your own pipeline. For the data loader, copy the code in `load_bb200_gcs.py` and add the path to your Service Account Key.
+
+For the data exporters, copy the code in `export_bb200_bq.py`.
 
 Your pipeline should look like this:
 
@@ -248,5 +255,3 @@ After this is added, you will be able to create tables, charts, and more to visu
 To avoid accruing costs on Google Cloud Platform, you can run the following command in your system terminal (not your Mage one) to breakdown the Terraform resources.
 
 `terraform destroy`
-
-## References
