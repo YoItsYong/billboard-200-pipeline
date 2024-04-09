@@ -7,7 +7,7 @@ def export_data(data, *args, **kwargs):
     os.system("""
     ./gsutil/google-cloud-sdk/bin/gcloud dataproc jobs submit pyspark \
         --project=INSERT_PROJECT_NAME \
-        --cluster=music-chart-cluster \
+        --cluster=bb200-cluster \
         --region=us-central1 \
         --jars=gs://spark-lib/bigquery/spark-bigquery-with-dependencies_2.12-0.23.2.jar \
     gs://bb200/code/spark_dataproc.py \

@@ -96,9 +96,12 @@ While the current iteration of the pipeline is functional, there are some additi
 The instructions below will help you set up the project environment and connect to cloud tools to reproduce the pipeline on your local machine.
 ### Prerequisites
 - **Create Google Account:** Visit [cloud.google.com](https://cloud.google.com/?hl=en) and create a new Google account if you don't have one already
-    - Create a new project
+    - Create a new Google Cloud Project called `billboard-200-project`
     - Create Service Account w/ Owner permissions
-    -  Enable Google [Compute Engine API](https://console.cloud.google.com/apis/library/compute.googleapis.com)
+        - Enable [Google BigQuery API](https://console.cloud.google.com/apis/library/bigquery.googleapis.com)
+        - Enable [Google Cloud Dataproc API](https://console.cloud.google.com/apis/library/dataproc.googleapis.com)
+        - Enable [Google Compute Engine API](https://console.cloud.google.com/apis/library/compute.googleapis.com)
+    - Create Dataproc Cluster called `bb200-cluster` with default parameters
     - Download Service Account Key (JSON)
 - **Install Terraform:** Follow [instructions here](https://developer.hashicorp.com/terraform/tutorials/gcp-get-started/install-cli) to install Terraform
 ### Using Terraform for Google Cloud Setup
@@ -132,7 +135,6 @@ Confirm the folllowing resources were created with their respective names.
 - Google Cloud Platform Project = billboard-200-project
 - Google Cloud Storage Bucket = bb200
 - Google BigQuery Data Set = bb200_data
-- Google Dataproc Cluster = music-chart-cluster
 
 If any of these were not created created incorrectly, fix it manually.
 ### Configure Spark_Dataproc.py
@@ -142,14 +144,14 @@ Replace the variables below with what matches your project.
 
 ```
 # (Line 13) Replace with path to your Serivce Account Key
-gcs_key = '/workspaces/billboard-200-pipeline/bb200-gcp-creds.json'
+gcs_key = 'path/to/service_account_key.json'
 
 #(Line 30) Replace temp_gcs_bucket with the name of your temporary bucket in GCS
-temp_gcs_bucket = 'dataproc-temp-us-central1-968744273040-pk1v5m8n'
+temp_gcs_bucket = 'name_of_temp_gcs_bucket'
 spark.conf.set('temporaryGcsBucket', temp_gcs_bucket)
 ```
 
-After updating these variables, we'll upload them to a the folder called `code` within your GCS bucket.
+After updating these variables, in GCS, create a new folder called `code` and copy the `spark_dataproc.py` to it.
 
 ### Docker/Mage Image Setup
 Next, we'll be setting up Mage within Docker using the [Quickstart Guide](https://docs.mage.ai/getting-started/setup#get-mage) provided by Mage.
@@ -157,7 +159,7 @@ Next, we'll be setting up Mage within Docker using the [Quickstart Guide](https:
 Using your terminal, `cd ..` until you're in your home directory and create a new directory called `mage`. Next, we'll run the command below to copy the quickstart repo to your own.
 ```
 git clone https://github.com/mage-ai/compose-quickstart.git mage \
-&& cd mage \
+&& cd mage 
 ```
 
 In the `mage` directory, we'll update a couple files before starting up our Mage Container
@@ -174,7 +176,8 @@ cp dev.env .env && rm dev.env
 docker compose up
 ```
 
-Your Mage instance should now be live on `localhost:6789`. Using the Mage UI, drag and drop the Service Account Key JSON file into the Mage project folder.
+Your Mage instance should now be live on `localhost:6789`. Before moving on, using your IDE, copy the Service Account Key JSON file into `mage/bb200-project` and replace the path found in the `io_config.yaml` file within Mage.
+
 ### Install Google Cloud CLI
 Within the Mage UI, click on the `Terminal` button on the side menu as shown below.
 
@@ -185,6 +188,18 @@ Our goal is to run the Google Cloud CLI to be able to use `gcloud` scripts withi
 We'll start with installing the Google Cloud CLI. First, run the scripts below to download, extract, and install the files in the Mage Terminal.
 
 ```
+
+### Create Pipeline to Google Cloud Storage
+Our first pipeline will take the `billboard200_albums_data` found [here](https://github.com/YoItsYong/billboard-200-pipeline/raw/main/data/billboard200_albums.csv.gz) and upload it to our Data Lake in Google Cloud Storage.
+
+For this, you can copy and paste the `load_bb200_csv.py` and `export_bb200_gcs.py` files in `bb200_to_gcs`.
+
+Your pipeline should look like this:
+
+< insert image >
+
+This moves the data to Google Cloud Storage and converts the `.csv.gz` to `parquet` using `PyArrow`.
+
 #Download Google Cloud CLI
 curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-471.0.0-linux-x86_64.tar.gz
 
@@ -197,24 +212,14 @@ tar -xf google-cloud-cli-471.0.0-linux-x86_64.tar.gz
 Next, we'll run the following script to authorize Mage to make changes to your Google Cloud account and make sure the Google Cloud CLI knows which project to make changes to.
 ```
 #Authorize Google Cloud Login
-./gsutil/google-cloud-sdk/bin/gcloud auth login
+./google-cloud-sdk/bin/gcloud auth login
 
 #Set Google Cloud Project
-./gsutil/google-cloud-sdk/bin/gcloud config set project < INSERT PROJECT ID >
+./google-cloud-sdk/bin/gcloud config set project billboard-200-project-2
 ```
 
 _Note: You may have to edit the script above depending on your folder structure._
 
-### Create Pipeline to Google Cloud Storage
-Our first pipeline will take the `billboard200_albums_data` found [here](https://github.com/YoItsYong/billboard-200-pipeline/raw/main/data/billboard200_albums.csv.gz) and upload it to our Data Lake in Google Cloud Storage.
-
-For this, you can copy and paste the `load_bb200_csv.py` and `export_bb200_gcs.py` files in `bb200_to_gcs`.
-
-Your pipeline should look like this:
-
-< insert image >
-
-This moves the data to Google Cloud Storage and converts the `.csv.gz` to `parquet` using `PyArrow`.
 ### Create Pipeline to BigQuery
 Now that our `.parquet` files are available in GCS, we will now process and transform this data, move it over to our Data Warehouse in Google BigQuery.
 

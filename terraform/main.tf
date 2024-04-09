@@ -35,25 +35,3 @@ resource "google_bigquery_dataset" "bb200_dataset" {
   location      = var.location
   delete_contents_on_destroy = true
 }
-
-resource "google_dataproc_cluster" "bb200_cluster" {
-  name          = var.dp_cluster_name
-  region        = var.region
-
-  master_config {
-    num_instances = 1
-    machine_type  = "n1-standard-4"
-  }
-
-  worker_config {
-    num_instances = 2
-    machine_type  = "n1-standard-4"
-  }
-
-  lifecycle {
-    ignore_changes = [
-      worker_config[0].num_instances,
-      worker_config[1].num_instances
-    ]
-  }
-}

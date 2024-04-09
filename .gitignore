@@ -6,6 +6,7 @@ billboard200_features.csv.gz
 .terraform
 .terraform.lock.hcl
 terraform.tfstate
+terraform.tfstate.backup
 
 *.db
 *.json

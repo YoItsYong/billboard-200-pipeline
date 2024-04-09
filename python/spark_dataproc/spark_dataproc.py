@@ -10,9 +10,6 @@ from pyspark.conf import SparkConf
 from pyspark.context import SparkContext
 from pyspark.sql.types import StringType, DateType, FloatType, IntegerType
 
-# Replace with path to your Serivce Account Key
-gcs_key = 'path/to/service_account_key.json'
-
 parser = argparse.ArgumentParser()
 
 parser.add_argument('--input_albums', required=True)
@@ -28,7 +25,7 @@ spark = SparkSession.builder \
     .getOrCreate()
 
 #Replace temp_gcs_bucket with the name of your temporary bucket in GCS
-temp_gcs_bucket = 'name_of_temp_gcs_bucket'
+temp_gcs_bucket = 'dataproc-temp-us-central1-692387679074-vn8xcn04'
 spark.conf.set('temporaryGcsBucket', temp_gcs_bucket)
 
 df = spark.read.parquet('gs://bb200/bb200_albums.parquet')
