@@ -104,7 +104,7 @@ The instructions below will help you set up the project environment and connect 
 ### Using Terraform for Google Cloud Setup
 First, we'll set up our Google Cloud Platform using Terraform. This makes it easier to ensure that the necessary storage resources are created.
 
-Start by copying the `main.tf` and `variables.tf` in the [Terraform folder](link).
+Start by creating a new folder and copying the `main.tf` and `variables.tf` from the [Terraform folder](https://github.com/YoItsYong/billboard-200-pipeline/tree/main/terraform).
 
 Within the `variables.tf`, replace the path to your Service Account Key file on your machine (as shown below).
 ```
@@ -255,3 +255,5 @@ After this is added, you will be able to create tables, charts, and more to visu
 To avoid accruing costs on Google Cloud Platform, you can run the following command in your system terminal (not your Mage one) to breakdown the Terraform resources.
 
 `terraform destroy`
+
+[Back to top](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#data-pipeline)

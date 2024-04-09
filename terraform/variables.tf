@@ -1,10 +1,10 @@
 variable "credentials" {
     description = "My Credentials"
-    default = "./path/to/gcs_key.json"
+    default = "PATH/TO/SERVICE_ACC_KEY.json"
 }
 variable "project" {
     description = "Project"
-    default = "billboard-200-project-2"
+    default = "billboard-200-project"
 }
 
 variable "region" {
@@ -19,12 +19,12 @@ variable "location" {
 
 variable "bq_dataset_name" {
     description = "My BigQuery Dataset Name"
-    default = "bb200_data-2"
+    default = "bb200_data"
 }
 
 variable "gcs_bucket_name" {
     description = "My Storage Bucket Name"
-    default = "bb200-2"
+    default = "bb200"
 }
 
 variable "gcs_storage_class" {
@@ -34,5 +34,5 @@ variable "gcs_storage_class" {
 
 variable "dp_cluster_name" {
     description = "Dataproc Cluster Name"
-    default = "music-chart-cluster-2"
+    default = "music-chart-cluster"
 }

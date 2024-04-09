@@ -2,5 +2,10 @@ terraform/gcp/google-cloud-sdk/
 albums.csv
 acoustic_features.csv
 billboard200_features.csv.gz
+
+.terraform
+.terraform.lock.hcl
+terraform.tfstate
+
 *.db
 *.json
