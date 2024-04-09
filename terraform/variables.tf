@@ -1,10 +1,10 @@
 variable "credentials" {
     description = "My Credentials"
-    default = "PATH/TO/SERVICE_ACC_KEY.json"
+    default = "PATH_TO_SERVICE_ACC_KEY.json"
 }
 variable "project" {
     description = "Project"
-    default = "billboard-200-project"
+    default = "billboard-200-project-2"
 }
 
 variable "region" {
@@ -30,9 +30,4 @@ variable "gcs_bucket_name" {
 variable "gcs_storage_class" {
   description = "Bucket Storage Class"
   default = "STANDARD"
-}
-
-variable "dp_cluster_name" {
-    description = "Dataproc Cluster Name"
-    default = "music-chart-cluster"
 }

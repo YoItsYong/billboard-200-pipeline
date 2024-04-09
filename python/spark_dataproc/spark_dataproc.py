@@ -25,7 +25,7 @@ spark = SparkSession.builder \
     .getOrCreate()
 
 #Replace temp_gcs_bucket with the name of your temporary bucket in GCS
-temp_gcs_bucket = 'dataproc-temp-us-central1-692387679074-vn8xcn04'
+temp_gcs_bucket = 'TEMP_GCS_BUCKET_NAME'
 spark.conf.set('temporaryGcsBucket', temp_gcs_bucket)
 
 df = spark.read.parquet('gs://bb200/bb200_albums.parquet')

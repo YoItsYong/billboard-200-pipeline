@@ -9,9 +9,6 @@ if 'data_loader' not in globals():
 if 'test' not in globals():
     from mage_ai.data_preparation.decorators import test
 
-# Replace with path to your Google Service Account Key
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = './PATH/TO/SERVICE_ACCOUNT_KEY.json'
-
 @data_loader
 def load_from_google_cloud_storage(*args, **kwargs):
     config_path = path.join(get_repo_path(), 'io_config.yaml')

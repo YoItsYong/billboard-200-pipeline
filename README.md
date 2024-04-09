@@ -143,9 +143,6 @@ After everything on Google Cloud is set up correctly, we'll configure the `spark
 Replace the variables below with what matches your project.
 
 ```
-# (Line 13) Replace with path to your Serivce Account Key
-gcs_key = 'path/to/service_account_key.json'
-
 #(Line 30) Replace temp_gcs_bucket with the name of your temporary bucket in GCS
 temp_gcs_bucket = 'name_of_temp_gcs_bucket'
 spark.conf.set('temporaryGcsBucket', temp_gcs_bucket)
@@ -167,7 +164,6 @@ In the `mage` directory, we'll update a couple files before starting up our Mage
 - In `requirements.txt`, add:
 ```
 pyspark==3.5.1
-pyarrow==15.0.2
 ```
 
 Next, run the following commands:
@@ -176,18 +172,18 @@ cp dev.env .env && rm dev.env
 docker compose up
 ```
 
-Your Mage instance should now be live on `localhost:6789`. Before moving on, using your IDE, copy the Service Account Key JSON file into `mage/bb200-project` and replace the path found in the `io_config.yaml` file within Mage.
+Your Mage instance should now be live on `localhost:6789`.
 
-### Install Google Cloud CLI
-Within the Mage UI, click on the `Terminal` button on the side menu as shown below.
+Before moving on, we'll configure Mage to make sure it can connect to our Google Cloud Platform.
+1. In the Mage UI, click on `Files` in the side menu.
 
-< insert image >
+    < IMAGE >
 
-Our goal is to run the Google Cloud CLI to be able to use `gcloud` scripts within Mage.
+2. Right click the project folder on left, select `Upload files`, and drag-and-drop your Service Account Key into the Mage window.
+3. After the upload is complete, open the `io_config.yml`, scroll down to `GOOGLE_SERVICE_ACC_KEY_FILEPATH` and enter the path to your key.
+4. Remove all of the other Google variables so your file looks like the image below.
 
-We'll start with installing the Google Cloud CLI. First, run the scripts below to download, extract, and install the files in the Mage Terminal.
-
-```
+< IMAGE >
 
 ### Create Pipeline to Google Cloud Storage
 Our first pipeline will take the `billboard200_albums_data` found [here](https://github.com/YoItsYong/billboard-200-pipeline/raw/main/data/billboard200_albums.csv.gz) and upload it to our Data Lake in Google Cloud Storage.
@@ -198,8 +194,20 @@ Your pipeline should look like this:
 
 < insert image >
 
-This moves the data to Google Cloud Storage and converts the `.csv.gz` to `parquet` using `PyArrow`.
+This moves the data to Google Cloud Storage and converts the `.csv.gz` to `parquet` using Pandas.
 
+
+### Install Google Cloud CLI
+Within the Mage UI, click on the `Terminal` button on the side menu as shown below.
+
+< insert image >
+
+Our goal is to run the Google Cloud CLI to be able to use `gcloud` scripts within Mage.
+
+We'll start with installing the Google Cloud CLI. First, run the scripts below to download, extract, and install the files in the Mage Terminal.
+
+
+```
 #Download Google Cloud CLI
 curl -O https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-471.0.0-linux-x86_64.tar.gz
 
@@ -209,16 +217,18 @@ tar -xf google-cloud-cli-471.0.0-linux-x86_64.tar.gz
 #Install Google Cloud CLI
 ./google-cloud-sdk/install.sh
 ```
+
 Next, we'll run the following script to authorize Mage to make changes to your Google Cloud account and make sure the Google Cloud CLI knows which project to make changes to.
 ```
 #Authorize Google Cloud Login
 ./google-cloud-sdk/bin/gcloud auth login
 
 #Set Google Cloud Project
-./google-cloud-sdk/bin/gcloud config set project billboard-200-project-2
+./google-cloud-sdk/bin/gcloud config set project INSERT_PROJECT_ID
 ```
 
 _Note: You may have to edit the script above depending on your folder structure._
+
 
 ### Create Pipeline to BigQuery
 Now that our `.parquet` files are available in GCS, we will now process and transform this data, move it over to our Data Warehouse in Google BigQuery.
