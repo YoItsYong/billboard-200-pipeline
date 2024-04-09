@@ -1,6 +1,5 @@
 # Billboard 200 Pipeline
-< Include banner image of some kind >
-
+![Banner image for Billboard 200 Pipeline project.](/images/bb200_banner.jpg)
 ## Table of Contents
 - [Introduction](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#introduction)
 - [Objective](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#objective)
