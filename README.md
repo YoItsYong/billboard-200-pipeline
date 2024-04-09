@@ -177,15 +177,13 @@ Your Mage instance should now be live on `localhost:6789`.
 Before moving on, we'll configure Mage to make sure it can connect to our Google Cloud Platform.
 1. In the Mage UI, click on `Files` in the side menu.
 
-![Screenshot of Mage UI showing Files option in the side menu.]
-(/images/mage_ui_files.png)
+![Screenshot of Mage UI showing Files option in the side menu.](/images/mage_ui_files.png)
 
 2. Right click the project folder on left, select `Upload files`, and drag-and-drop your Service Account Key into the Mage window.
 3. After the upload is complete, open the `io_config.yml`, scroll down to `GOOGLE_SERVICE_ACC_KEY_FILEPATH` and enter the path to your key.
 4. Remove all of the other Google variables so your file looks like the image below.
 
-![Screenshot of Mage UI showing Google Cloud Platform configuration in io_config.yaml.]
-(/images/mage_io_config.png)
+![Screenshot of Mage UI showing Google Cloud Platform configuration in io_config.yaml.](/images/mage_io_config.png)
 
 ### Create Pipeline to Google Cloud Storage
 Our first pipeline will take the `billboard200_albums_data` found [here](https://github.com/YoItsYong/billboard-200-pipeline/raw/main/data/billboard200_albums.csv.gz) and upload it to our Data Lake in Google Cloud Storage.
@@ -194,8 +192,7 @@ For this, you can copy and paste the `load_bb200_csv.py` and `export_bb200_gcs.p
 
 Your pipeline should look like this:
 
-![Screenshot of Mage UI showing pipeline diagram for bb200_to_gcs.]
-(/images/bb200_to_gcs.png)
+![Screenshot of Mage UI showing pipeline diagram for bb200_to_gcs.](/images/bb200_to_gcs.png)
 
 This moves the data to Google Cloud Storage and converts the `.csv.gz` to `parquet` using Pandas.
 
@@ -203,8 +200,7 @@ This moves the data to Google Cloud Storage and converts the `.csv.gz` to `parqu
 ### Install Google Cloud CLI
 Within the Mage UI, click on the `Terminal` button on the side menu as shown below.
 
-![Screenshot of Mage UI showing the Terminal option in the side menu.]
-(/images/mage_ui_terminal.png)
+![Screenshot of Mage UI showing the Terminal option in the side menu.](/images/mage_ui_terminal.png)
 
 Our goal is to run the Google Cloud CLI to be able to use `gcloud` scripts within Mage.
 
@@ -243,8 +239,7 @@ For the data exporters, copy the code in `export_bb200_bq.py`.
 
 Your pipeline should look like this:
 
-![Screenshot of Mage UI showing pipeline diagram for bb200_to_bq]
-(/images/bb200_to_bq.png)
+![Screenshot of Mage UI showing pipeline diagram for bb200_to_bq](/images/bb200_to_bq.png)
 
 Before running the pipeline, make sure to replace `project` with the name of your Google Cloud Project name.
 
