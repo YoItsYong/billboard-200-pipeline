@@ -24,24 +24,21 @@ To create this pipeline, I used a variety of technologies to extract, transform,
 - Data Warehouse: Google BigQuery
 - Batch Processing: Apache Spark (PySpark)
 - Workflow Orchestration: Mage
-- Visualization: Google Data Studio
+- Visualization: Google Looker Studio
 
-< Insert diagram here >
+![Diagram depicting what technology is used and how it is implemented.](/images/bb200_tech_diagram.png)
 
 ## Data Pipeline
 ### Preparing the Data
 The data set orginates from [Components.one](https://www.dropbox.com/s/ahog97hcatpiddk/billboard-200.db?dl=1), a research platform that makes its data sets publicly available for use. The data from this site first comes in the form of a `.db` file, which is most commonly used with SQLite. Because this is not a file type I am used to working with, I opted to take this `.db` file and convert it to a `.csv.gz` for the sake of working more comfortably.
 
-<!-- Make sure update any file or folder names referenced here -->
-The files in `python/prepare_data` can be used to convert the original SQLite file to a `.csv.gz`. This can be run locally if you would like to convert the data into `.csv.gz` or you can simply use the converted [found here](https://github.com/YoItsYong/billboard-200-pipeline/tree/main/data).
-
 ### Ingesting the Data
-After getting the `billboard200_albums.csv.gz` file, we then load the data using Mage where we can orechestrate the ingestion and exporting to our Data Lake in Google Cloud Storage (GCS).
+Using Mage, we then orechestrate the ingestion and exporting to our Data Lake in Google Cloud Storage (GCS).
 
 During this step, we also convert the file from `.csv.gz` to `.parquet` to take up less space on GCS.
 
 ### Processing the Data
-Now that the data is available in GCS, we'll then set up a separate pipeline to take this data from GCS, process and transform using Apache Spark, and export the data to BigQuery.
+Now that the data is available in GCS, we'll then set up a separate pipeline to take this data from GCS, process and transform it using Apache Spark, and export the data to BigQuery.
 
 To run Spark within Mage, we have shell commands in place to make sure our Mage instance is connected to Dataproc in Google Cloud. This allows us to run Spark without issue and move some of the processing load to the cloud.
 
@@ -74,10 +71,14 @@ df = df.na.fill(value=0, subset=['number_of_tracks'])
 df = df.na.fill(value=0, subset=['track_length'])
 ```
 
-After this, the data is automatically loaded to BigQuery where it is then pulled into Google Data Studio for visualization.
+After this, the data is automatically loaded to BigQuery where it is then pulled into Google Looker Studio for visualization.
 
 ## Dashboard
 The dashboard below pulls from BiqQuery and creates charts and tables for further analysis.
+
+**[LIVE VERSION](https://lookerstudio.google.com/reporting/69427c4c-7cd2-4f26-836d-74556ee00f74)**
+
+[![Dashboard for Billboard 200 data.](/images/bb200_dashboard.png)]((https://lookerstudio.google.com/reporting/69427c4c-7cd2-4f26-836d-74556ee00f74))
 
 The tiles I've selected for this dashboard includes:
 - The artist with most chart placements at number 1
@@ -159,6 +160,7 @@ git clone https://github.com/mage-ai/compose-quickstart.git mage \
 ```
 
 In the `mage` directory, we'll update a couple files before starting up our Mage Container
+- Copy the contents of `Dockerfile` and `docker-compose.yml` from this repo and paste them into your Mage files
 - In `dev.env`, rename the Mage Project to `bb200_project`
 - In `requirements.txt`, add:
 ```
@@ -174,13 +176,13 @@ docker compose up
 Your Mage instance should now be live on `localhost:6789`.
 
 Before moving on, we'll configure Mage to make sure it can connect to our Google Cloud Platform.
-1. In the Mage UI, click on `Files` in the side menu.
+- In the Mage UI, click on `Files` in the side menu.
 
 ![Screenshot of Mage UI showing Files option in the side menu.](/images/mage_ui_files.png)
 
-2. Right click the project folder on left, select `Upload files`, and drag-and-drop your Service Account Key into the Mage window.
-3. After the upload is complete, open the `io_config.yml`, scroll down to `GOOGLE_SERVICE_ACC_KEY_FILEPATH` and enter the path to your key.
-4. Remove all of the other Google variables so your file looks like the image below.
+- Right click the project folder on left, select `Upload files`, and drag-and-drop your Service Account Key into the Mage window.
+- After the upload is complete, open the `io_config.yml`, scroll down to `GOOGLE_SERVICE_ACC_KEY_FILEPATH` and enter the path to your key.
+- Remove all of the other Google variables so your file looks like the image below.
 
 ![Screenshot of Mage UI showing Google Cloud Platform configuration in io_config.yaml.](/images/mage_io_config.png)
 
@@ -258,10 +260,10 @@ def export_data(data, *args, **kwargs):
     """)
 ```
 
-Running this pipeline loads data from GCS and performs the transformations using `Apache Spark`. The transformed data is then moved to our BigQuery where we can connect to it with Google Data Studio for visualizations.
+Running this pipeline loads data from GCS and performs the transformations using `Apache Spark`. The transformed data is then moved to our BigQuery where we can connect to it with Google Looker Studio for visualizations.
 
-### Create Visualizations in Google Data Studio
-Open Google Data Studio and connect to BigQuery as your data source.
+### Create Visualizations in Google Looker Studio
+Open [Google Looker Studio](https://lookerstudio.google.com/) and connect to BigQuery as your data source.
 
 After this is added, you will be able to create tables, charts, and more to visualize the Billboard 200 data.
 
