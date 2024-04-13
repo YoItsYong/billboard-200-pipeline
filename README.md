@@ -78,16 +78,17 @@ The dashboard below pulls from BiqQuery and creates charts and tables for furthe
 
 **[LIVE VERSION](https://lookerstudio.google.com/reporting/69427c4c-7cd2-4f26-836d-74556ee00f74)**
 
-[![Dashboard for Billboard 200 data.](/images/bb200_dashboard.png)]((https://lookerstudio.google.com/reporting/69427c4c-7cd2-4f26-836d-74556ee00f74))
+![Dashboard for Billboard 200 data.](/images/bb200_dashboard.png)
 
 The tiles I've selected for this dashboard includes:
 - The artist with most chart placements at number 1
 - The percentage of number 1s each of the top-charting artists has
 - The number of artists that chart year over year
 
+You can also adjust the `YEAR` filter in the corner to see which artists topped the charts for that partiicular year.
+
 ## Future Improvements
 While the current iteration of the pipeline is functional, there are some additional steps and precaution that could be taken to improve overall performance.
-- Streamline File Conversion Process: I plan to also look at streamlining the current process of converting the original SQLite file and implementing it into 
 - Additional Calculations: There are likely some additional calculated columns that could be incorporated.
 - Partition Data in GCS: There is room to partition the data for better organization.
 - Implement CI/CD: I haven't implemented any more formal CI/CD processes for pushing changes to the project, but this is something that I will likely explore in the future for a more realistic p roduction environment.
@@ -109,23 +110,28 @@ First, we'll set up our Google Cloud Platform using Terraform. This makes it eas
 
 Start by creating a new folder and copying the `main.tf` and `variables.tf` from the [Terraform folder](https://github.com/YoItsYong/billboard-200-pipeline/tree/main/terraform).
 
-Within the `variables.tf`, replace the path to your Service Account Key file on your machine (as shown below).
+Within the `variables.tf`, replace the path to your Service Account Key file and the Google Cloud Storage Bucket name on your machine (as shown below).
 ```
+(Line 1)
 variable "credentials" {
     description = "My Credentials"
     default = "./PATH/TO/GCS_KEY.json"
+}
+
+...
+
+(Line 25)
+variable "gcs_bucket_name" {
+    description = "My Storage Bucket Name"
+    default = "YOUR-NAME-bb200"
 }
 ```
 After adding the path to your Service Account Key, open a terminal and navigate to the `Terraform folder` on your machine and run the command below.
 ```
 terraform init
-```
-Once the command above is complete, run this command.
-```
+
 terraform plan
-```
-Finally, we'll apply the changes to your Google Cloud Platform account.
-```
+
 terraform apply
 ```
 ### Configuring Google Cloud Platform
@@ -133,7 +139,7 @@ The Terraform files should have created a few resources within your Google Cloud
 
 Confirm the folllowing resources were created with their respective names.
 - Google Cloud Platform Project = billboard-200-project
-- Google Cloud Storage Bucket = bb200
+- Google Cloud Storage Bucket = YOUR-NAME-bb200
 - Google BigQuery Data Set = bb200_data
 
 If any of these were not created created incorrectly, fix it manually.

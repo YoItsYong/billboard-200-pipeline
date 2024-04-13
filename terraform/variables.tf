@@ -1,6 +1,6 @@
 variable "credentials" {
     description = "My Credentials"
-    default = "PATH_TO_SERVICE_ACC_KEY.json"
+    default = "./PATH/TO/GCS_KEY.json"
 }
 variable "project" {
     description = "Project"
@@ -24,7 +24,7 @@ variable "bq_dataset_name" {
 
 variable "gcs_bucket_name" {
     description = "My Storage Bucket Name"
-    default = "bb200"
+    default = "YOUR-NAME-bb200"
 }
 
 variable "gcs_storage_class" {
