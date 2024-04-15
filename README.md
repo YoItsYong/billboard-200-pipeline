@@ -5,10 +5,9 @@
 - [Objective](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#objective)
 - [Technologies](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#technologies)
 - [Data Pipeline](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#data-pipeline)
-- [Dashboard](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#data-pipeline)
-- [Future Improvements](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#data-pipeline)
-- [Reproducing the Project](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#data-pipeline)
-- [References](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#data-pipeline)
+- [Dashboard](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#dashboard)
+- [Future Improvements](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#future-improvements)
+- [Reproducing the Project](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#reproducing-the-project)
 ## Introduction
 The Billboard 200 is a weekly music chart that measures the top selling (or streaming) albums in the United States. Placing at the top of the chart has historically been a marker of a release's success and can often be an important factor in how an artist defines their legacy.
 
@@ -278,4 +277,4 @@ To avoid accruing costs on Google Cloud Platform, you can run the following comm
 
 `terraform destroy`
 
-[Back to top](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md#data-pipeline)
+[Back to top](https://github.com/YoItsYong/billboard-200-pipeline/blob/main/README.md)
