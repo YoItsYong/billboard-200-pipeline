@@ -10,3 +10,5 @@ terraform.tfstate.backup
 
 *.db
 *.json
+
+billboard-200-pipeline.code-workspace
